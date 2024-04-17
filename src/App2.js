@@ -12,41 +12,21 @@ class App extends Component {
       loading : true,
       movies: [],
       index: 0,
-      suggestions: []
     }
   }
  // 목록 30개 제한, 평점 7.0 이상, 영화 제목 오름차순 정렬
   componentDidMount(){
     fetch('https://yts.mx/api/v2/list_movies.json?minimum_rating=7.0&&sort_by=title&limit=30&&order_by=asc')
     .then( res => res.json())
-    .then( async (result) => {
+    .then( result => {
       const { data : {movies} } = result
-      await this.getMovieSuggesion(movies[0].id, 0)
-      
       this.setState({loading: false, movies})
-      setInterval(()=>{
-        const index = this.getRandomIndex(movies.length)
-        this.getMovieSuggesion(this.state.movies.length === 0? movies[0].id: this.state.movies[index].id,index)
-      },3000)
     })
   }
 
-  getMovieSuggesion = async (id, index)=>{
-    const suggestions = await fetch(`https://yts.mx/api/v2/movie_suggestions.json?movie_id=${id}`)
-    const movieSuggestions= await suggestions.json()
-    const {data: {movies}} = movieSuggestions
-    this.setState({suggestions : movies, index})
-  }
-
-
   getRandomIndex = (length)=>{
-    let i = Math.floor(Math.random()*length)
-    while(i === this.index){
-      i = Math.floor(Math.random()*length)
-    }
-    return i
+    return Math.floor(Math.random()*length)
   }
-
   render(){  
     const {loading, movies, index} = this.state
     const style = {
@@ -55,8 +35,7 @@ class App extends Component {
       justifyContent : 'center',
       alignItems: 'center',
       width: '60%',
-      textAlign: 'center',
-      margin: '0 auto'
+      textAlign: 'center'
     }
     const bannerStyle = {
       display: 'flex',
@@ -78,19 +57,27 @@ class App extends Component {
         </div>
       )
     }else{
+      console.log(movies[0])
       return (
         <div>
           <div style={bannerStyle}>
+            {setInterval(()=>{
+              const index = Math.floor(Math.random()*30)
+              if(index === this.index)
+              return(
                   <Banner
-                  key={movies[index]?.id} 
-                  title={movies[index]?.title} 
-                  genres={movies[index]?.genres}
-                  cover={movies[index]?.large_cover_image}
-                  rating={movies[index]?.rating}
-                  runtime={movies[index]?.runtime}
-                  summary={movies[index]?.summary}
-                  suggestions = {this.state.suggestions}
+                  key={movies[0].id} 
+                  title={movies[0].title} 
+                  genres={movies[0].genres}
+                  cover={movies[0].large_cover_image}
+                  reting={movies[0].rating}
+                  runtime={movies[0].runtime}
+                  summary={movies[0].summary}
                 />
+              )
+            }
+            , 3000)}
+
           </div>
           <div style={style}>
             {movies.map(movie=>{

@@ -1,0 +1,15 @@
+.banner-details{
+    padding: 15px;
+    position: relative;
+}
+
+.banner-details span{
+    display: block;
+}
+
+.banner-recommends{
+    display: flex;
+    gap: 5px;
+    position: absolute;
+    bottom: 5px; 
+}

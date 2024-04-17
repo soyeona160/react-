@@ -1,0 +1,22 @@
+.sidebar{
+    width: 30%;
+    height: 100vh;
+    background-color: cornflowerblue;
+    color:snow;
+    position:absolute;
+    left: -30%;
+    top:0;
+    transition: all .7s ease-in-out;
+}
+
+.open{
+    left: 0;
+}
+
+.sidebar-menus{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-flow: column;
+}
